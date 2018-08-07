@@ -19,7 +19,7 @@ public abstract class Task {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Introduceti ziua din saptamana: ");
+		System.out.println("Introduceti ziua din saptamana [Luni, Marti, ...]: ");
 		try {
 			this.WeekDay = input.readLine();
 		} catch (IOException e) {
