@@ -10,15 +10,15 @@ public class Scheduler extends Thread {
 	
 	public static void main (String args[]) throws IOException {
 		Scanner reader = new Scanner(System.in);
-		int option = 0;
+		int option = -1;
 		
-		while (option != 4) {
+		while (option != 0) {
 		
 			Scheduler scheduler = new Scheduler();
 			scheduler.start();
 			
 			System.out.println("Welcome to your own Scheduler!");
-			System.out.println("What do you want to do today? \n 1.See your event list. \n 2.Add an event. \n 3.Delete an event. \n 4.Exit");
+			System.out.println("What do you want to do today? \n 1.See your event list. \n 2.Add an event. \n 3.Delete an event. \n 0.Exit");
 			option = reader.nextInt();
 			if(option == 1) {
 				System.out.println("~~Work Events:");
@@ -54,27 +54,17 @@ public class Scheduler extends Thread {
 				
 				//boolean found = false; 
 				Event foundEvent = null;
-				if (found == false) {
-					for(Event e : workEvents) {
-						if(!found) {
-							if(e.getID() == option) {
-								removeWorkEvent(option);
-								found = true;
-								break;
-							}
+				for(Event e : workEvents) {
+						if(e.getID() == option) {
+							foundEvent = e;
+							break;
 						}
-					}
-				}
-				if (found == false) {
-					for(int i = 1 ; i <= personalEvents.size() && found == false ; i++) {
-							if(personalEvents.get(i).id == option) {
-								removeWorkEvent(option);
-								found = true;
-							}
-					}
-				}
+				}	
+				if (foundEvent != null) {
+					removeWorkEvent(foundEvent);
+		        }
 			}
-			else if(option != 4) {
+			else if(option != 0) {
 				System.out.println("This option does not exist.");
 			}
 		}
@@ -90,10 +80,10 @@ public class Scheduler extends Thread {
 		if(temp_ != null)
 			personalEvents.add(temp_);
 	}
-	public static void removeWorkEvent(int x) {
+	public static void removeWorkEvent(Event x) {
 		workEvents.remove(x);
 	}
-	public static void removePersonalEvent(int x) {
+	public static void removePersonalEvent(Event x) {
 		personalEvents.remove(x);
 	}
 	public static int DayNumber(String DayName) {	
