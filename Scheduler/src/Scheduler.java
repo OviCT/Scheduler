@@ -149,7 +149,7 @@ public class Scheduler extends Thread {
 				}	
 		}
 		try {
-			sleep(3000);
+			sleep(60000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}	
