@@ -147,17 +147,24 @@ public class Scheduler extends Thread {
 					int EventMinute = Integer.parseInt(list.getMinute());
 					
 					if(day == DayNumber(list.getDay())) {
-					if((EventHour - hour <=1) && (EventMinute - minute <= 30)) {
-						if(EventMinute > minute) {
-							System.out.print( "Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+						if((EventHour - hour == 1) && (minute >= 30) ) {
+							
+							if(EventMinute == 00) {
+								System.out.print("Atentie! Mai sunt " + (60 - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							}			
+							else if( (EventMinute > minute) && (60 - minute + EventMinute) <= 30 ) {
+								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							}
+							else if((60 - minute) + EventMinute <= 30) {
+								System.out.print( "Atentie! Mai sunt " + ((60 - minute) + EventMinute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							}
 						}
-						else {
-							System.out.print( "Atentie! Mai sunt " + (minute - EventMinute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+						else if((EventHour - hour == 0) && (EventMinute - minute <= 30) && (EventMinute - minute > 0)) {
+								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							}
 						}
 					}
-					}
-				}	
-		}
+			}
 		try {
 			sleep(60000);
 		} catch (InterruptedException e) {
