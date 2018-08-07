@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public abstract class Event {
-	private int id;
+	public int id;
 	private static int count = 1;
 	private String name;
 	private String hour;
@@ -56,5 +56,8 @@ public abstract class Event {
 	}
 	public String getDay() {
 		return this.weekday;
+	}
+	public int getID() {
+		return this.id;
 	}
 }

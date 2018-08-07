@@ -51,16 +51,15 @@ public class Scheduler extends Thread {
 			}
 			else if(option == 3) {
 				System.out.println("What event do you want to delete?");
-				option = reader.nextInt();
-				//String name = reader.nextLine();
-				if(workEvents.contains(option)) {
-					removeWorkEvent(option);
+				// option = reader.nextInt();
+				boolean found = false; 
+				for(int i = 1 ; i < workEvents.size() ; i++) {
+					if(workEvents[i].id == option) {
+						removeWorkEvent(option);
+					}
 				}
-				if(workEvents.contains(option)) {
-					removePersonalEvent(option);
-				}
-				
 			}
+				
 			else if(option != 4) {
 				System.out.println("This option does not exist.");
 			}
@@ -140,7 +139,7 @@ public class Scheduler extends Thread {
 							}
 						}
 						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the Event named " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 					}
@@ -167,7 +166,7 @@ public class Scheduler extends Thread {
 							}
 						}
 						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the Event named " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 					}
