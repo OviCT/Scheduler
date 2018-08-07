@@ -4,100 +4,107 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 public class Scheduler extends Thread {
-	private static ArrayList<Task> tasksWork = new ArrayList<Task>();
-	private static ArrayList<Task> tasksHome = new ArrayList<Task>();
-	private static GetTaskFactory task = new GetTaskFactory();
+	private static ArrayList<Event> workEvents = new ArrayList<Event>();
+	private static ArrayList<Event> personalEvents = new ArrayList<Event>();
+	private static GetTaskFactory event = new GetTaskFactory();
 	
 	public static void main (String args[]) throws IOException {
 		Scanner reader = new Scanner(System.in);
-		int optiune = 0;
+		int option = 0;
 		
-		while (optiune != 4) {
+		while (option != 4) {
 		
 			Scheduler scheduler = new Scheduler();
 			scheduler.start();
 			
-			System.out.println("Bun venit la propriul tau Scheduler!");
-			System.out.println("Ce doresti sa faci? \n 1.Vezi toate evenimentele \n 2.Adauga un eveniment. \n 3.Sterge un eveniment \n 4.Exit");
-			optiune = reader.nextInt();
-			if(optiune == 1) {
-				System.out.println("~~Evenimentele pentru Serviciu:");
-				for(Task task : tasksWork)
+			System.out.println("Welcome to your own Scheduler!");
+			System.out.println("What do you want to do today? \n 1.See your event list. \n 2.Add an event. \n 3.Delete an event. \n 4.Exit");
+			option = reader.nextInt();
+			if(option == 1) {
+				System.out.println("~~Work Events:");
+				for(Event task : workEvents)
 					task.getInfo();
-				System.out.println("~~Evenimentele pentru Acasa:");
-				for(Task task : tasksHome)
+				System.out.println("~~Personal Events:");
+				for(Event task : personalEvents)
 					task.getInfo();
 				
-				System.out.println("Apasa enter pentru a te intoarce la meniu.");
+				System.out.println("Press enter to return to the menu.");
 				System.in.read();
 			}
-			else if(optiune == 2) {
-				System.out.println("Ce fel de task vrei sa adaugi? Pentru [Serviciu] sau [Acasa]? ~Tasteaza 'Inapoi' pentru a te intoarce~");
+			else if(option == 2) {
+				System.out.println("What kind of evemt do you want to add? [Work] or [Personal]? ~Type 'back' to go back~");
 				while (true) {
-					String alegere = reader.nextLine();
-					if(alegere.equalsIgnoreCase("Inapoi"))
+					String choice = reader.nextLine();
+					if(choice.equalsIgnoreCase("Back"))
 						break;
-					if(alegere.equalsIgnoreCase("Serviciu")) {
-						addTaskWork(alegere);
+					if(choice.equalsIgnoreCase("Work")) {
+						addWorkEvent(choice);
 					}
-					else if(alegere.equalsIgnoreCase("Acasa")) {
-						addTaskHome(alegere);
+					else if(choice.equalsIgnoreCase("Personal")) {
+						addPersonalEvent(choice);
 					}
-					else if(alegere.length() > 1){
-						System.out.println("Aceasta optiune nu exista");
+					else if(choice.length() > 1){
+						System.out.println("This option does not exist.");
 					}
 						
 				}
 			}
-			else if(optiune == 3) {
-				System.out.println("Ce task doriti sa stergeti?");
-				optiune = reader.nextInt();
-				;
+			else if(option == 3) {
+				System.out.println("What event do you want to delete?");
+				option = reader.nextInt();
+				//String name = reader.nextLine();
+				if(workEvents.contains(option)) {
+					removeWorkEvent(option);
+				}
+				if(workEvents.contains(option)) {
+					removePersonalEvent(option);
+				}
+				
 			}
-			else if(optiune != 4) {
-				System.out.println("Optiunea dorita nu exista.");
+			else if(option != 4) {
+				System.out.println("This option does not exist.");
 			}
 
 		}
 		reader.close();
 	}
-	public static void addTaskWork(String tip) {
-		Task temp_ = task.getTask(tip);
+	public static void addWorkEvent(String type) {
+		Event temp_ = event.getEvent(type);
 		if(temp_ != null)
-			tasksWork.add(temp_);
+			workEvents.add(temp_);
 	}
-	public static void addTaskHome(String tip) {
-		Task temp_ = task.getTask(tip);
+	public static void addPersonalEvent(String type) {
+		Event temp_ = event.getEvent(type);
 		if(temp_ != null)
-			tasksHome.add(temp_);
+			personalEvents.add(temp_);
 	}
-	public static void removeTaskWork(int x) {
-		tasksWork.remove(x);
+	public static void removeWorkEvent(int x) {
+		workEvents.remove(x);
 	}
-	public static void removeTaskHome(int x) {
-		tasksHome.remove(x);
+	public static void removePersonalEvent(int x) {
+		personalEvents.remove(x);
 	}
 	public static int DayNumber(String DayName) {	
 		
-		if(DayName.equalsIgnoreCase("Luni")) {
+		if(DayName.equalsIgnoreCase("Monday")) {
 			return 2;
 		}
-		else if(DayName.equalsIgnoreCase("Marti")) {
+		else if(DayName.equalsIgnoreCase("Tuesday")) {
 			return 3;
 		}
-		else if(DayName.equalsIgnoreCase("Miercuri")) {
+		else if(DayName.equalsIgnoreCase("Wednesday")) {
 			return 4;
 		}
-		else if(DayName.equalsIgnoreCase("Joi")) {
+		else if(DayName.equalsIgnoreCase("Thursday")) {
 			return 5;
 		}
-		else if(DayName.equalsIgnoreCase("Vineri")) {
+		else if(DayName.equalsIgnoreCase("Friday")) {
 			return 6;
 		}
-		else if(DayName.equalsIgnoreCase("Sambata")) {
+		else if(DayName.equalsIgnoreCase("Saturday")) {
 			return 7;
 		}
-		else if(DayName.equalsIgnoreCase("Duminica")) {
+		else if(DayName.equalsIgnoreCase("Sunday")) {
 			return 1;
 		}
 		else 
@@ -105,62 +112,62 @@ public class Scheduler extends Thread {
 	}
 	
 	Calendar c = Calendar.getInstance();
-	int hour = c.get(Calendar.HOUR_OF_DAY);
-	int minute = c.get(Calendar.MINUTE);
-	int day = c.get(Calendar.DAY_OF_WEEK);
+	int currentHour = c.get(Calendar.HOUR_OF_DAY);
+	int currentMinute = c.get(Calendar.MINUTE);
+	int currentDay = c.get(Calendar.DAY_OF_WEEK);
 	
 	
 	public void run() {
-		if(tasksWork.size() == 0) {
+		if(workEvents.size() == 0) {
 			System.out.println("");
 		}
 		else {
-			for(Task list : tasksWork) {
+			for(Event list : workEvents) {
 					int EventHour = Integer.parseInt(list.getHour());
 					int EventMinute = Integer.parseInt(list.getMinute());
 					
-					if(day == DayNumber(list.getDay())) {
-						if((EventHour - hour == 1) && (minute >= 30) ) {
+					if(currentDay == DayNumber(list.getDay())) {
+						if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
 							
 							if(EventMinute == 00) {
-								System.out.print("Atentie! Mai sunt " + (60 - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " event," + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}			
-							else if( (EventMinute > minute) && (60 - minute + EventMinute) <= 30 ) {
-								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event," + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
-							else if((60 - minute) + EventMinute <= 30) {
-								System.out.print( "Atentie! Mai sunt " + ((60 - minute) + EventMinute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							else if((60 - currentMinute) + EventMinute <= 30) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event," + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
-						else if((EventHour - hour == 0) && (EventMinute - minute <= 30) && (EventMinute - minute > 0)) {
-								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the Event named " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 					}
 			}
-		if(tasksHome.size() == 0) {
+		if(personalEvents.size() == 0) {
 			System.out.println("");
 		}
 		else {
-			for(Task list : tasksHome) {
+			for(Event list : personalEvents) {
 					int EventHour = Integer.parseInt(list.getHour());
 					int EventMinute = Integer.parseInt(list.getMinute());
 					
-					if(day == DayNumber(list.getDay())) {
-						if((EventHour - hour == 1) && (minute >= 30) ) {
+					if(currentDay == DayNumber(list.getDay())) {
+						if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
 							
 							if(EventMinute == 00) {
-								System.out.print("Atentie! Mai sunt " + (60 - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " event," + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}			
-							else if( (EventMinute > minute) && (60 - minute + EventMinute) <= 30 ) {
-								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event," + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
-							else if((60 - minute) + EventMinute <= 30) {
-								System.out.print( "Atentie! Mai sunt " + ((60 - minute) + EventMinute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+							else if((60 - currentMinute) + EventMinute <= 30) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event," + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
-						else if((EventHour - hour == 0) && (EventMinute - minute <= 30) && (EventMinute - minute > 0)) {
-								System.out.print("Atentie! Mai sunt " + (EventMinute - minute) + " de miunte pana la Evenimentul " + list.getNume() + " setat pentru ora " + list.getHour() + ":" + list.getMinute() + " . \n");
+						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the Event named " + list.getName() + " event,"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 					}

@@ -1,8 +1,8 @@
 
-public class Work extends Task {
+public class Work extends Event {
 
 	@Override
 	public void WhatKind() {
-		System.out.println("Fac parte din categoria task-urilor pentru Serviciu.");
+		System.out.println("I am a work event.");
 	}
 }

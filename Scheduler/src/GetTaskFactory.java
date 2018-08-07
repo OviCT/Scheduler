@@ -1,17 +1,17 @@
 
 public class GetTaskFactory{
-	public Task getTask(String taskInfo) {
-		if(taskInfo == null) {
+	public Event getEvent(String eventInfo) {
+		if(eventInfo == null) {
 			return null;
 		}
-		else if(taskInfo.equalsIgnoreCase("Serviciu")) {
+		else if(eventInfo.length() < 1) {
+			System.out.println("This kind of event does not exist. Send a feedback, maybe we will add it!");
+		}
+		else if(eventInfo.equalsIgnoreCase("Work")) {
 			return new Work();
 		}
-		else if(taskInfo.equalsIgnoreCase("Acasa")) {
-			return new Home();
-		}
-		else if(taskInfo.length() > 1) {
-			System.out.println("Deocamdata, acel tip de task nu exista. Send a feedback, maybe we will add it!");
+		else if(eventInfo.equalsIgnoreCase("Personal")) {
+			return new Personal();
 		}
 		
 		return null;
