@@ -28,7 +28,7 @@ public class Scheduler extends Thread {
 				for(Event task : personalEvents)
 					task.getInfo();
 				
-				System.out.println("Press enter to return to the menu.");
+				System.out.println(" \nPress enter to return to the menu.");
 				System.in.read();
 			}
 			else if(option == 2) {
@@ -45,25 +45,28 @@ public class Scheduler extends Thread {
 					}
 					else if(choice.length() > 1){
 						System.out.println("This option does not exist.");
-					}
-						
+					}		
 				}
 			}
 			else if(option == 3) {
 				System.out.println("What event do you want to delete?");
 				option = reader.nextInt();
 				
-				boolean found = false; 
+				//boolean found = false; 
+				Event foundEvent = null;
 				if (found == false) {
-					for(int i = 0 ; i < workEvents.size() && found == false ; i++) {
-							if(workEvents.get(i).id == option) {
+					for(Event e : workEvents) {
+						if(!found) {
+							if(e.getID() == option) {
 								removeWorkEvent(option);
 								found = true;
+								break;
 							}
+						}
 					}
 				}
 				if (found == false) {
-					for(int i = 0 ; i < personalEvents.size() && found == false ; i++) {
+					for(int i = 1 ; i <= personalEvents.size() && found == false ; i++) {
 							if(personalEvents.get(i).id == option) {
 								removeWorkEvent(option);
 								found = true;
@@ -74,7 +77,6 @@ public class Scheduler extends Thread {
 			else if(option != 4) {
 				System.out.println("This option does not exist.");
 			}
-
 		}
 		reader.close();
 	}
@@ -95,7 +97,6 @@ public class Scheduler extends Thread {
 		personalEvents.remove(x);
 	}
 	public static int DayNumber(String DayName) {	
-		
 		if(DayName.equalsIgnoreCase("Monday")) {
 			return 2;
 		}
@@ -125,7 +126,6 @@ public class Scheduler extends Thread {
 	int currentHour = c.get(Calendar.HOUR_OF_DAY);
 	int currentMinute = c.get(Calendar.MINUTE);
 	int currentDay = c.get(Calendar.DAY_OF_WEEK);
-	
 	
 	public void run() {
 		if(workEvents.size() == 0) {
@@ -165,7 +165,6 @@ public class Scheduler extends Thread {
 					
 					if(currentDay == DayNumber(list.getDay())) {
 						if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
-							
 							if(EventMinute == 00) {
 								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}			
@@ -173,11 +172,11 @@ public class Scheduler extends Thread {
 								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 							else if((60 - currentMinute) + EventMinute <= 30) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event" + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event"  + " scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
+								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event"  + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
 							}
 						}
 					}
