@@ -52,16 +52,25 @@ public class Scheduler extends Thread {
 				System.out.println("What event do you want to delete?");
 				option = reader.nextInt();
 				
-				//boolean found = false; 
 				Event foundEvent = null;
 				for(Event e : workEvents) {
 						if(e.getID() == option) {
 							foundEvent = e;
 							break;
-						}
+					}
 				}	
 				if (foundEvent != null) {
 					removeWorkEvent(foundEvent);
+		        }
+				
+				for(Event e : personalEvents) {
+						if(e.getID() == option) {
+							foundEvent = e;
+							break;
+					}
+				}	
+				if (foundEvent != null) {
+					removePersonalEvent(foundEvent);
 		        }
 			}
 			else if(option != 0) {
