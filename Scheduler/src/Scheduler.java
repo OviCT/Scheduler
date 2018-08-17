@@ -32,7 +32,7 @@ public class Scheduler extends Thread {
 				System.in.read();
 			}
 			else if(option == 2) {
-				System.out.println("What kind of evemt do you want to add? [Work] or [Personal]? ~Type 'back' to return to the menu.~");
+				System.out.println("What kind of event do you want to add? [Work] or [Personal]? ~Type 'back' to return to the menu.~");
 				while (true) {
 					String choice = reader.nextLine();
 					if(choice.equalsIgnoreCase("Back"))
@@ -44,12 +44,12 @@ public class Scheduler extends Thread {
 						addPersonalEvent(choice);
 					}
 					else if(choice.length() > 1){
-						System.out.println("This option does not exist.");
+						System.out.println("This kind of event does not exist. Send a feedback, maybe we will add it!");
 					}		
 				}
 			}
 			else if(option == 3) {
-				System.out.println("What event do you want to delete?");
+				System.out.println("What event do you want to delete? [1, 2, 3, ...]");
 				option = reader.nextInt();
 				
 				Event foundEvent = null;
@@ -128,58 +128,66 @@ public class Scheduler extends Thread {
 	
 	public void run() {
 		if(workEvents.size() == 0) {
-			System.out.println("");
+			System.out.println();
 		}
 		else {
 			for(Event list : workEvents) {
-					int EventHour = Integer.parseInt(list.getHour());
-					int EventMinute = Integer.parseInt(list.getMinute());
+				
+				String hour = list.getHour();
+				String[] partsOfhour = hour.split(":");
+				
+				int EventHour = Integer.parseInt(partsOfhour[0]);
+				int	EventMinute = Integer.parseInt(partsOfhour[1]);		
 					
-					if(currentDay == DayNumber(list.getDay())) {
-						if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
-							
-							if(EventMinute == 00) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}			
-							else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
-							else if((60 - currentMinute) + EventMinute <= 30) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
+				if(currentDay == DayNumber(list.getDay())) {
+					if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
+						
+						if(EventMinute == 00) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " (work) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
+						}			
+						else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " (work) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
 						}
-						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event"  + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
+						else if((60 - currentMinute) + EventMinute <= 30) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " (work) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
 						}
 					}
+					else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " (work) event"  + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
+						}
+					}
+				}
 			}
 		if(personalEvents.size() == 0) {
-			System.out.println("");
+			System.out.println();
 		}
 		else {
 			for(Event list : personalEvents) {
-					int EventHour = Integer.parseInt(list.getHour());
-					int EventMinute = Integer.parseInt(list.getMinute());
-					
-					if(currentDay == DayNumber(list.getDay())) {
-						if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
-							if(EventMinute == 00) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}			
-							else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
-							else if((60 - currentMinute) + EventMinute <= 30) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " event" + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
+				
+				String hour = list.getHour();
+				String[] partsOfhour = hour.split(":");
+				
+				int EventHour = Integer.parseInt(partsOfhour[0]);
+				int EventMinute = Integer.parseInt(partsOfhour[1]);
+				
+				if(currentDay == DayNumber(list.getDay())) {
+					if((EventHour - currentHour == 1) && (currentMinute >= 30) ) {
+						if(EventMinute == 00) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + (60 - currentMinute) + " minutes left until the " + list.getName() + " (personal) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
+						}			
+						else if( (EventMinute > currentMinute) && (60 - currentMinute + EventMinute) <= 30 ) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are "  + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " (personal) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
 						}
-						else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
-								System.out.print("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " event"  + ", scheduled for hour " + list.getHour() + ":" + list.getMinute() + " . \n");
-							}
+						else if((60 - currentMinute) + EventMinute <= 30) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + ((60 - currentMinute) + EventMinute) + " minutes left until the " + list.getName() + " (personal) event" + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
 						}
 					}
-			}
+					else if((EventHour - currentHour == 0) && (EventMinute - currentMinute <= 30) && (EventMinute - currentMinute > 0)) {
+							System.out.println("It's " + currentHour + ":" + currentMinute + ". There are " + (EventMinute - currentMinute) + " minutes left until the " + list.getName() + " (personal) event"  + ", scheduled for hour " + partsOfhour[0] + ":" + partsOfhour[1] + " .");
+						}
+					}
+				}
+		}
 		try {
 			sleep(60000);
 		} catch (InterruptedException e) {

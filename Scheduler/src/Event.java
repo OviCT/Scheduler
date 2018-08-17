@@ -6,9 +6,8 @@ public abstract class Event {
 	public int id;
 	private static int count = 1;
 	private String name;
-	private String hour;
+	private String hour = "00:00";
 	private String weekday;
-	private String minute;
 	
 	Event(){
 		System.out.println("Insert the name of the event: ");
@@ -25,34 +24,26 @@ public abstract class Event {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
-		System.out.println("Insert only the hour of the Event [hh]: ");
+		System.out.println("Insert the hour of the Event [hh:mm]: ");
 		try {
 			this.hour = input.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
-		System.out.println("Insert only the minutes of the Event [mm]: ");
-		try {
-			this.minute = input.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
 		this.id=count++;
 	}
 	
 	public abstract void WhatKind();
 	
-	public void getInfo() {
-		System.out.println("Event " + id + ": " + weekday + " at " + hour + ":" + minute + " - " + name);
-	}
 	public String getHour() {
 		return this.hour;
 	}
+	public void getInfo() {
+		System.out.println("Event " + id + ": " + weekday + " at " + hour + " - " + name);
+	}
 	public String getName() {
 		return this.name;
-	}
-	public String getMinute() {
-		return this.minute;
 	}
 	public String getDay() {
 		return this.weekday;
