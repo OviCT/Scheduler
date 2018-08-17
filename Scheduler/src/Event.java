@@ -6,7 +6,7 @@ public abstract class Event {
 	public int id;
 	private static int count = 1;
 	private String name;
-	private String hour = "00:00";
+	private String hour;
 	private String weekday;
 	
 	Event(){
